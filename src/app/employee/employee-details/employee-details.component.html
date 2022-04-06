@@ -1,0 +1,11 @@
+<br>
+<h1> Hello  {{employee.firstName}} {{employee.lastName}} ! </h1>
+<br>
+<table class="table table-bordered">
+  <tr> <h2> Account Information </h2> </tr>
+  <tr> <h3> <b> Email Address: </b> {{employee.email}} </h3> </tr>
+<!--  <tr> <button class="btn btn-primary btn-lgn" routerLink="/user/edit/{{employee.id}}"> Edit Details </button> </tr> &ndash;&gt;-->
+  <br>
+</table>
+
+<button class="btn-secondary" (click)="gotoList()">Back</button>

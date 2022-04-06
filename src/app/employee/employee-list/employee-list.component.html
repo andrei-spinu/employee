@@ -1,1 +1,27 @@
-<p>employee-list works!</p>
+<div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Firstname</th>
+      <th scope="col">Lastname</th>
+      <th scope="col">Details</th>
+      <th scope="col">Edit</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let employee of employees">
+    <tr>
+      <th scope="row">ID: {{employee.id}}</th>
+      <td>{{employee.firstName}}</td>
+      <td>{{employee.lastName}}</td>
+      <td>
+        <button class="btn-primary" [routerLink]="['/employees',employee.id]">Details</button>
+      </td>
+      <td>
+        <button class="btn-primary" [routerLink]="['/employees/edit',employee.id]">Edit</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

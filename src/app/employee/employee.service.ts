@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {Employee} from "./employee";
+import {Observable} from "rxjs";
 
 
 const httpOptions = {
@@ -13,8 +15,16 @@ export class EmployeeService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllEmployees(){
-    return this.httpClient.get("server/api/employees/getAll");
+  getAllEmployees() : Observable<Employee[]>{
+    return this.httpClient.get<Employee[]>('/server/api/employees/getAll');
+  }
+
+  getEmployeeById(id : number) : Observable<Employee>{
+    return  this.httpClient.get<Employee>('/server/api/employees/'+id);
+  }
+
+  editEmoployee(employee: Employee) : Observable<HttpResponse<Employee>>{
+    return this.httpClient.put<Employee>('/server/api/employees/'+  employee.id, employee, {observe: 'response'});
   }
 
 }

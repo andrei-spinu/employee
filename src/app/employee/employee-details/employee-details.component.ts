@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {EmployeeService} from "../employee.service";
-import {Employee} from "../employee";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Employee} from "../../model/employee";
+import {EmployeeService} from "../../service/employee.service";
 
 @Component({
   selector: 'app-employee-details',
@@ -10,12 +10,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class EmployeeDetailsComponent implements OnInit {
 
-  public employee!: Employee;
+  public employee: Employee;
 
   constructor(
     private employeeService : EmployeeService,
     private activatedRoute : ActivatedRoute,
-    private router : Router) {}
+    private router : Router) {
+    this.employee = new Employee();
+  }
 
   ngOnInit(): void {
     this.getEmployeeById(this.activatedRoute.snapshot.params['id']);
@@ -28,7 +30,7 @@ export class EmployeeDetailsComponent implements OnInit {
     );
   }
 
-  gotoList() {
+  goToEmployeeList() {
     this.router.navigate(['employees']);
   }
 }

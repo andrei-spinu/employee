@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {EmployeeService} from "../employee.service";
-import {Employee} from "../employee";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Employee} from "../../model/employee";
+import {EmployeeService} from "../../service/employee.service";
+
 
 @Component({
   selector: 'app-employee-edit',
@@ -11,64 +11,33 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class EmployeeEditComponent implements OnInit {
 
-  employee!: Employee;
-  employeeForm!: FormGroup;
-  validMessage: string = '';
-  errorArr!: [];
+  id: number = -1;
+  employee: Employee = new Employee();
 
-
-  constructor(
-    private employeeService: EmployeeService,
-    private activatedRoute: ActivatedRoute,
-    private route : Router
-  ) {
-
+  constructor(private employeeService: EmployeeService,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.employeeForm = new FormGroup({
-        firstName: new FormControl('', Validators.required),
-        lastName: new FormControl('', Validators.required),
-        email: new FormControl('', Validators.required),
-        password: new FormControl('', Validators.required)
-      }
-    )
+    this.id = this.route.snapshot.params['id'];
+
+    this.employeeService.getEmployeeById(this.id).subscribe(
+      data => this.employee = data,
+      error => console.log(error)
+    );
   }
 
-  submitEmployee(): void {
-    if (this.employeeForm.valid
-    ) {
-
-      console.log(this.employeeForm.value);
-      this.employee = {
-        id: this.activatedRoute.snapshot.params['id'],
-        firstName: this.employeeForm.value.firstName,
-        lastName: this.employeeForm.value.lastName,
-        email: this.employeeForm.value.email,
-        password: this.employeeForm.value.password
-      };
-      this.employeeService.editEmoployee(this.employee).subscribe(
-        data => {
-          console.log(data);
-          this.validMessage = 'Emoployee updated.';
-          return true;
-        },
-        error => {
-          this.errorArr = error.error.errors;
-          this.errorArr.forEach(element => console.log(element));
-
-          console.log(error);
-
-        }
+  onSubmit(){
+    this.employeeService.editEmoployee(this.employee)
+      .subscribe(
+        data => this.goToEmployeeList(),
+        error => console.log(error)
       );
-
-    } else {
-      this.validMessage = "Please fill out the details before submitting!";
-    }
   }
 
-
-  gotoList() {
-    this.route.navigate(['employees']);
+  goToEmployeeList(){
+    this.router.navigate(['/employees']);
   }
+
 }
